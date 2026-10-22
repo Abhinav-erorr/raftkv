@@ -1,0 +1,10 @@
+# Go build and test artifacts
+/raftkv
+*.test
+*.out
+
+# Editor and operating-system files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
