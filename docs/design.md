@@ -16,10 +16,14 @@ through the public pair operations.
 provides a deliberately small client boundary while the future network client
 will add leader discovery and retry behavior.
 
+`cmd/raftkv-demo` is a small executable walkthrough of the current
+milestone. It constructs three nodes, advances logical time, and prints the
+resulting election state without introducing a second implementation path.
+
 ## Milestones
 
 1. **Complete:** module/package foundation; deterministic election and
-   heartbeat core; fake network; focused tests; race-test baseline.
+   heartbeat core; fake network; focused tests; and a runnable demo.
 2. **Next:** replicated log entries, commit index, apply channel, and
    AppendEntries consistency checks.
 3. **Next:** stable storage and restart recovery.

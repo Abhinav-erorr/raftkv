@@ -12,6 +12,7 @@ heartbeat core plus a concurrency-safe local KV state machine.
 - Deterministic in-memory network with controllable links and synchronous
   delivery.
 - Focused election, heartbeat, partition, and KV tests.
+- Runnable election demonstration under `cmd/raftkv-demo`.
 
 Log replication, persistence, client leader routing, request deduplication,
 randomized fault injection, and Porcupine histories are intentionally future
@@ -27,3 +28,14 @@ gofmt -w .
 
 See [docs/design.md](docs/design.md) for architecture and milestone details.
 For a guided reading order, see [docs/learning.md](docs/learning.md).
+
+## Run the election demo
+
+```text
+go run ./cmd/raftkv-demo
+```
+
+The demo advances logical time in fixed 25 ms steps and prints each node's
+role, term, and known leader. It uses the same deterministic fake network as
+the tests, so the election can be read and reproduced without sleeping or
+running background goroutines.
