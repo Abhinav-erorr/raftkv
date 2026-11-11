@@ -67,6 +67,7 @@ func TestPartitionElectsNewLeaderWithMajority(t *testing.T) {
 	for i := 0; i < 8; i++ {
 		net.Tick(25 * time.Millisecond)
 	}
+
 	var oldLeader *raft.Node
 	for _, node := range nodes {
 		if node.Role() == raft.Leader {
@@ -95,5 +96,34 @@ func TestPartitionElectsNewLeaderWithMajority(t *testing.T) {
 	}
 	if majorityLeader.Term() <= oldLeader.Term() {
 		t.Fatalf("new leader term = %d, old leader term = %d", majorityLeader.Term(), oldLeader.Term())
+	}
+}
+
+func TestLeaderReplicatesAndCommitsEntry(t *testing.T) {
+	net, nodes := makeCluster(t, 3)
+	for i := 0; i < 8; i++ {
+		net.Tick(25 * time.Millisecond)
+	}
+	var leader *raft.Node
+	for _, node := range nodes {
+		if node.Role() == raft.Leader {
+			leader = node
+		}
+	}
+	if leader == nil {
+		t.Fatal("no leader elected")
+	}
+	if err := leader.Propose("set x=1"); err != nil {
+		t.Fatal(err)
+	}
+	net.Flush()
+	if leader.CommitIndex() != 1 {
+		t.Fatalf("leader commit index = %d, want 1", leader.CommitIndex())
+	}
+	for _, node := range nodes {
+		entries := node.Log()
+		if len(entries) != 1 || entries[0].Command != "set x=1" {
+			t.Fatalf("node %d log = %#v, want replicated command", node.ID(), entries)
+		}
 	}
 }

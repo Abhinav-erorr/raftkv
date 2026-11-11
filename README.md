@@ -9,14 +9,16 @@ heartbeat core plus a concurrency-safe local KV state machine.
 - Go module and package boundaries: `raft`, `network`, `kv`, and `client`.
 - Raft follower/candidate/leader transitions with term and vote handling.
 - Empty `AppendEntries` heartbeats and leader recognition.
+- First log-replication slice: leader proposals, follower matching, and
+  majority commit tracking.
 - Deterministic in-memory network with controllable links and synchronous
   delivery.
 - Focused election, heartbeat, partition, and KV tests.
 - Runnable election demonstration under `cmd/raftkv-demo`.
 
-Log replication, persistence, client leader routing, request deduplication,
-randomized fault injection, and Porcupine histories are intentionally future
-milestones, not simulated by this implementation.
+Persistence, state-machine application, client leader routing, request
+deduplication, randomized fault injection, and Porcupine histories remain
+future milestones.
 
 ## Development
 

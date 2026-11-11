@@ -54,6 +54,13 @@ func (n *FakeNetwork) Tick(elapsed time.Duration) {
 	n.DeliverAll()
 }
 
+func (n *FakeNetwork) Flush() {
+	for _, node := range n.nodesSnapshot() {
+		n.collect(node)
+	}
+	n.DeliverAll()
+}
+
 func (n *FakeNetwork) collect(node *raft.Node) {
 	n.mu.Lock()
 	defer n.mu.Unlock()

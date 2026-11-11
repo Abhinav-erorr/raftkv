@@ -37,15 +37,25 @@ const (
 // intentionally absent from this first milestone; AppendEntries is a
 // heartbeat until log replication is added.
 type Message struct {
-	From        uint64
-	To          uint64
-	Type        MessageType
-	Term        uint64
-	Granted     bool
-	Success     bool
-	LeaderID    uint64
-	LastLogIdx  uint64
-	LastLogTerm uint64
+	From         uint64
+	To           uint64
+	Type         MessageType
+	Term         uint64
+	Granted      bool
+	Success      bool
+	LeaderID     uint64
+	LastLogIdx   uint64
+	LastLogTerm  uint64
+	PrevLogIndex uint64
+	PrevLogTerm  uint64
+	Entries      []Entry
+	LeaderCommit uint64
+	MatchIndex   uint64
+}
+
+type Entry struct {
+	Term    uint64
+	Command string
 }
 
 // Config controls deterministic node timing. Timeouts are logical durations:
